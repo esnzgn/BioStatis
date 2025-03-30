@@ -15,6 +15,9 @@ function(input, output, session) {
       group1 <- rnorm(input$smpl_siz, mean = 0, sd = 1)
       group2 <- rnorm(input$smpl_siz, mean = input$mean_diff, sd = 1)
       
+      # group1 <- rnorm(100, mean = 0, sd = 1)
+      # group2 <- rnorm(100, mean = 2, sd = 1)
+      
       original_diff <- mean(group2) - mean(group1)
       combined <- c(group1, group2)
       
@@ -24,6 +27,12 @@ function(input, output, session) {
         mean(shuffled[1:input$smpl_siz]) - mean(shuffled[(input$smpl_siz + 1):(2*input$smpl_siz)])
       })
       
+      # Permutation Test
+      # perm_diffs <- replicate(100, {
+      #   shuffled <- sample(combined)
+      #   mean(shuffled[1:100]) - mean(shuffled[(100 + 1):(2*100)])
+      # })
+      
       output$perm_plot <- renderPlot({
         ggplot(data.frame(perm_diffs), aes(x = perm_diffs)) +
           geom_histogram(color = "black", fill = "skyblue", bins = 30) +
@@ -31,7 +40,7 @@ function(input, output, session) {
           labs(title = "Permutation Distribution", x = "Mean Differences", y = "Frequency")
       })
       
-      p_value <- mean(abs(perm_diffs) >= abs(original_diff))
+      p_value <- mean(c(abs(perm_diffs) >= abs(original_diff)))
       
       output$perm_pvalue <- renderPrint({
         cat("Permutation Test P-value:\n")
@@ -39,6 +48,12 @@ function(input, output, session) {
       })
       
       # Bootstrapping
+      boot_diffs <- replicate(input$n_perm, {
+        g1_boot <- sample(group1, replace = TRUE)
+        g2_boot <- sample(group2, replace = TRUE)
+        mean(g2_boot) - mean(g1_boot)
+      })
+      
       boot_diffs <- replicate(input$n_perm, {
         g1_boot <- sample(group1, replace = TRUE)
         g2_boot <- sample(group2, replace = TRUE)
