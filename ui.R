@@ -13,7 +13,7 @@ fluidPage(
   
   sidebarLayout(
     sidebarPanel(
-      sliderInput("n", "Sample Size per Group:", min = 10, max = 100, value = 30),
+      sliderInput("smpl_siz", "Sample Size per Group:", min = 10, max = 100, value = 30),
       numericInput("mean_diff", "True Mean Difference:", value = 1, step = 0.1),
       numericInput("n_perm", "Number of Permutations:", value = 1000, step = 100),
       actionButton("go", "Run Simulation")
