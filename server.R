@@ -12,8 +12,8 @@ function(input, output, session) {
     
     observeEvent(input$go, {
       set.seed(123)
-      group1 <- rnorm(input$n, mean = 0, sd = 1)
-      group2 <- rnorm(input$n, mean = input$mean_diff, sd = 1)
+      group1 <- rnorm(input$smpl_siz, mean = 0, sd = 1)
+      group2 <- rnorm(input$smpl_siz, mean = input$mean_diff, sd = 1)
       
       original_diff <- mean(group2) - mean(group1)
       combined <- c(group1, group2)
@@ -21,7 +21,7 @@ function(input, output, session) {
       # Permutation Test
       perm_diffs <- replicate(input$n_perm, {
         shuffled <- sample(combined)
-        mean(shuffled[1:input$n]) - mean(shuffled[(input$n + 1):(2*input$n)])
+        mean(shuffled[1:input$smpl_siz]) - mean(shuffled[(input$smpl_siz + 1):(2*input$smpl_siz)])
       })
       
       output$perm_plot <- renderPlot({
