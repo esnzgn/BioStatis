@@ -54,11 +54,11 @@ function(input, output, session) {
         mean(g2_boot) - mean(g1_boot)
       })
       
-      boot_diffs <- replicate(100, {
-        g1_boot <- sample(group1, replace = TRUE)
-        g2_boot <- sample(group2, replace = TRUE)
-        mean(g2_boot) - mean(g1_boot)
-      })
+      # boot_diffs <- replicate(100, {
+      #   g1_boot <- sample(group1, replace = TRUE)
+      #   g2_boot <- sample(group2, replace = TRUE)
+      #   mean(g2_boot) - mean(g1_boot)
+      # })
       
       output$boot_plot <- renderPlot({
         ggplot(data.frame(boot_diffs), aes(x = boot_diffs)) +
