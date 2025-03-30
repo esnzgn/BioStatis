@@ -54,7 +54,7 @@ function(input, output, session) {
         mean(g2_boot) - mean(g1_boot)
       })
       
-      boot_diffs <- replicate(input$n_perm, {
+      boot_diffs <- replicate(100, {
         g1_boot <- sample(group1, replace = TRUE)
         g2_boot <- sample(group2, replace = TRUE)
         mean(g2_boot) - mean(g1_boot)
